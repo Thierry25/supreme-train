@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("login")
+@SessionAttributes("name")
 public class LoginController {
 
 //    private Logger logger = LoggerFactory.getLogger(getClass());

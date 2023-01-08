@@ -11,6 +11,7 @@
 <body>
     <h3>Welcome ${name}</h3>
     <p>Your password <strike>${password}</strike> is not really secured though</p>
+    <a href="/list-todos">Manage your todos</a>
 </body>
 
 </html>
