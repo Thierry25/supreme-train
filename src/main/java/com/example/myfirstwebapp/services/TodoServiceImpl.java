@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,4 +38,29 @@ public class TodoServiceImpl implements TodoService {
                 .filter(todo -> todo.getUsername().equals(username))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void addTodo(String username, String description, LocalDate date, boolean isCompleted) {
+        int id = todos.size();
+        var newTodo = new Todo(id + 1, username, description, date, isCompleted);
+        todos.add(newTodo);
+    }
+
+    @Override
+    public void deleteTodo(int id) {
+        todos.removeIf(todo -> todo.getId() == id);
+    }
+
+    @Override
+    public void updateTodo(int id, Todo todo) {
+        var current = getTodo(id);
+        todo.setTargetDate(LocalDate.now().plusMonths(6));
+        todos.set(current.get().getId() - 1, todo);
+    }
+
+    @Override
+    public Optional<Todo> getTodo(int id) {
+        return todos.stream().filter(todo -> todo.getId() == id).findFirst();
+    }
+
 }

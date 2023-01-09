@@ -1,21 +1,24 @@
 package com.example.myfirstwebapp.models;
 
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDate;
 
 public class Todo {
 
     private int id;
     private String username;
+    @Size(min=10, message = "Please enter at least 10 characters")
     private String description;
     private LocalDate targetDate;
-    private boolean isCompleted;
+    private boolean done;
 
-    public Todo(int id, String username, String description, LocalDate targetDate, boolean isCompleted) {
+    public Todo(int id, String username, String description, LocalDate targetDate, boolean done) {
         this.id = id;
         this.username = username;
         this.description = description;
         this.targetDate = targetDate;
-        this.isCompleted = isCompleted;
+        this.done = done;
     }
 
     public int getId() {
@@ -50,12 +53,12 @@ public class Todo {
         this.targetDate = targetDate;
     }
 
-    public boolean isCompleted() {
-        return isCompleted;
+    public boolean isDone() {
+        return done;
     }
 
-    public void setCompleted(boolean completed) {
-        isCompleted = completed;
+    public void setDone(boolean done) {
+        this.done = done;
     }
 
     @Override
@@ -65,7 +68,7 @@ public class Todo {
                 ", username='" + username + '\'' +
                 ", description='" + description + '\'' +
                 ", targetDate=" + targetDate +
-                ", isCompleted=" + isCompleted +
+                ", isCompleted=" + done +
                 '}';
     }
 }
