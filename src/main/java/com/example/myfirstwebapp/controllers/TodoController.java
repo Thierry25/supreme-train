@@ -41,7 +41,7 @@ public class TodoController {
             return "newTodo";
         }
         todoService.addTodo((String) model.getAttribute("name"), todo.getDescription(),
-                LocalDate.now().plusMonths(5), false);
+               todo.getTargetDate() , false);
         return "redirect:list-todos";
     }
 
@@ -54,6 +54,7 @@ public class TodoController {
     @GetMapping("update-todo")
     public String updateTodo(Model model, @RequestParam int id) {
         var todo = todoService.getTodo(id);
+//        todo.get().setTargetDate(LocalDate.now().plusMonths(8));
         model.addAttribute("todo", todo);
         return "newTodo";
     }
