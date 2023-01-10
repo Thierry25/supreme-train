@@ -1,11 +1,19 @@
 package com.example.myfirstwebapp.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
+@Entity
 public class Todo {
-
+    @Id
+    @GeneratedValue
     private int id;
     private String username;
     @Size(min=10, message = "Please enter at least 10 characters")
@@ -19,6 +27,10 @@ public class Todo {
         this.description = description;
         this.targetDate = targetDate;
         this.done = done;
+    }
+
+    public Todo() {
+        
     }
 
     public int getId() {
@@ -70,5 +82,11 @@ public class Todo {
                 ", targetDate=" + targetDate +
                 ", isCompleted=" + done +
                 '}';
+    }
+    
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

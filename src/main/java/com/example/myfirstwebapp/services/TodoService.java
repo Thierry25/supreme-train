@@ -10,11 +10,11 @@ public interface TodoService {
     List<Todo> allTodos();
     List<Todo> findByUsername(String username);
 
-    void addTodo(String username, String description, LocalDate date, boolean isCompleted);
+    void addTodo(Todo todo);
 
     void deleteTodo(int id);
 
-    void updateTodo(int id, Todo todo);
+    void updateTodo(Todo todo);
 
     Optional<Todo> getTodo(int id);
 

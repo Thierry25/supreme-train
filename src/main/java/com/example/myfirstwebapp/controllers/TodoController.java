@@ -1,6 +1,7 @@
 package com.example.myfirstwebapp.controllers;
 
 import com.example.myfirstwebapp.models.Todo;
+import com.example.myfirstwebapp.services.AuthenticationService;
 import com.example.myfirstwebapp.services.TodoService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -14,22 +15,26 @@ import java.time.LocalDate;
 @SessionAttributes("name")
 public class TodoController {
 
-    private TodoService todoService;
+    private final TodoService todoService;
+    private final AuthenticationService authenticationService;
 
-    public TodoController(TodoService todoService) {
+    public TodoController(TodoService todoService, AuthenticationService authenticationService) {
         this.todoService = todoService;
+        this.authenticationService = authenticationService;
     }
 
     @RequestMapping("list-todos")
     public String listAllTodos(Model model) {
-        model.addAttribute("todos", todoService.allTodos());
+        String username = authenticationService.getSignedInUser();
+        model.addAttribute("todos", todoService.findByUsername(username));
         return "listTodos";
     }
 
     @GetMapping("add-todo")
     public String showNewTodoPage(Model model) {
         // WEIRD: Putting a default todo in the model
-        var newTodo = new Todo(0, (String) model.getAttribute("name"), "",
+        String username = authenticationService.getSignedInUser();
+        var newTodo = new Todo(0, username, "",
                 LocalDate.now().plusMonths(4), false);
         model.addAttribute("todo", newTodo);
         return "newTodo";
@@ -40,8 +45,10 @@ public class TodoController {
         if (result.hasErrors()) {
             return "newTodo";
         }
-        todoService.addTodo((String) model.getAttribute("name"), todo.getDescription(),
-               todo.getTargetDate() , false);
+
+        String username = authenticationService.getSignedInUser();
+        todo.setUsername(username);
+        todoService.addTodo(todo);
         return "redirect:list-todos";
     }
 
@@ -64,8 +71,10 @@ public class TodoController {
         if(result.hasErrors()){
             return "newTodo";
         }
-        todo.setUsername((String) model.getAttribute("name"));
-        todoService.updateTodo(id, todo);
+        String username = authenticationService.getSignedInUser();
+        todo.setUsername(username);
+//        todoService.updateTodo(id, todo);
+        todoService.updateTodo(todo);
         return "redirect:list-todos";
     }
 

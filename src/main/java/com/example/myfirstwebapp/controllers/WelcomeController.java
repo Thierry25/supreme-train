@@ -1,5 +1,6 @@
 package com.example.myfirstwebapp.controllers;
 
+import com.example.myfirstwebapp.services.AuthenticationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,16 +11,16 @@ import org.springframework.web.bind.annotation.*;
 @SessionAttributes("name")
 public class WelcomeController {
 
+    private final AuthenticationService authenticationService;
+
+    public WelcomeController(AuthenticationService authenticationService){
+        this.authenticationService = authenticationService;
+    }
+
     @GetMapping
     public String goToWelcomePage(Model model ){
-        model.addAttribute("name", "Thierry");
+        model.addAttribute("name", authenticationService.getSignedInUser());
         return "welcome";
     }
 
-//    @PostMapping
-//    public String welcome(@RequestParam String name, @RequestParam String password, Model model){
-//        model.addAttribute("name", name);
-//        model.addAttribute("password", password);
-//        return authenticationService.isCorrectInfo(name, password) ? "welcome" : "login";
-//    }
 }
